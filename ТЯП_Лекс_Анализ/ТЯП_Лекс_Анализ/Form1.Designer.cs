@@ -76,7 +76,7 @@ namespace ТЯП_Лекс_Анализ
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ResultTextBox = new System.Windows.Forms.TextBox();
-            this.CreateAnalisButton = new System.Windows.Forms.Button();
+            this.CreateLecsicalAnalisButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.TableReservWord = new System.Windows.Forms.DataGridView();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -133,15 +133,15 @@ namespace ТЯП_Лекс_Анализ
             this.ResultTextBox.Size = new System.Drawing.Size(1356, 57);
             this.ResultTextBox.TabIndex = 1;
             // 
-            // CreateAnalisButton
+            // CreateLecsicalAnalisButton
             // 
-            this.CreateAnalisButton.Location = new System.Drawing.Point(12, 12);
-            this.CreateAnalisButton.Name = "CreateAnalisButton";
-            this.CreateAnalisButton.Size = new System.Drawing.Size(192, 32);
-            this.CreateAnalisButton.TabIndex = 1;
-            this.CreateAnalisButton.Text = "Выполнить анализ";
-            this.CreateAnalisButton.UseVisualStyleBackColor = true;
-            this.CreateAnalisButton.Click += new System.EventHandler(this.CreateAnalisButton_Click);
+            this.CreateLecsicalAnalisButton.Location = new System.Drawing.Point(12, 12);
+            this.CreateLecsicalAnalisButton.Name = "CreateLecsicalAnalisButton";
+            this.CreateLecsicalAnalisButton.Size = new System.Drawing.Size(258, 32);
+            this.CreateLecsicalAnalisButton.TabIndex = 1;
+            this.CreateLecsicalAnalisButton.Text = "Выполнить лексический анализ";
+            this.CreateLecsicalAnalisButton.UseVisualStyleBackColor = true;
+            this.CreateLecsicalAnalisButton.Click += new System.EventHandler(this.CreateAnalisButton_Click);
             // 
             // groupBox2
             // 
@@ -378,7 +378,7 @@ namespace ТЯП_Лекс_Анализ
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.CreateAnalisButton);
+            this.Controls.Add(this.CreateLecsicalAnalisButton);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Лексический анализатор";
@@ -406,7 +406,7 @@ namespace ТЯП_Лекс_Анализ
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox ResultTextBox;
-        private System.Windows.Forms.Button CreateAnalisButton;
+        private System.Windows.Forms.Button CreateLecsicalAnalisButton;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox4;

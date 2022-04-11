@@ -13,6 +13,7 @@ namespace ТЯП_Лекс_Анализ
     public partial class Form1 : Form
     {
         LexicalAnalyzer lexicalAnalyzer;
+        Parser parser;
         public Form1()
         {
             InitializeComponent();
