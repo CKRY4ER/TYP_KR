@@ -8,3 +8,13 @@ C:\Users\user\source\repos\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анал
 C:\Users\user\source\repos\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.csproj.CoreCompileInputs.cache
 C:\Users\user\source\repos\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.exe
 C:\Users\user\source\repos\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.pdb
+C:\Users\user\Desktop\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\bin\Debug\ТЯП_Лекс_Анализ.exe.config
+C:\Users\user\Desktop\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\bin\Debug\ТЯП_Лекс_Анализ.exe
+C:\Users\user\Desktop\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\bin\Debug\ТЯП_Лекс_Анализ.pdb
+C:\Users\user\Desktop\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.Form1.resources
+C:\Users\user\Desktop\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.Properties.Resources.resources
+C:\Users\user\Desktop\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.csproj.GenerateResource.cache
+C:\Users\user\Desktop\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.exe
+C:\Users\user\Desktop\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.pdb
