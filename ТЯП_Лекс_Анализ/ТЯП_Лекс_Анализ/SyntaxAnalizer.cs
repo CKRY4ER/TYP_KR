@@ -33,10 +33,16 @@ namespace ТЯП_Лекс_Анализ
                 ErrorMessage("Программа должна начинаться символом {");
                 return;
             }
-            if (!WhosNext())
-                return;
-            if (!EQ("}"))
-                ErrorMessage("Программа должна заканчиваться символом }");
+            while(_lexem!="}")
+            {
+                WhosNext();
+                GetLexem();
+            }
+            //if (!WhosNext())
+            //    return;
+            //GetLexem();
+            //if (!EQ("}"))
+            //    ErrorMessage("Программа должна заканчиваться символом }");
         }
         private bool WhosNext()
         {
@@ -64,7 +70,7 @@ namespace ТЯП_Лекс_Анализ
             }
             else
                 ErrorMessage("Описание переменных должно начинаться c dim");
-            return false;
+            return true;
         }
         private bool Oper()
         {
@@ -76,6 +82,7 @@ namespace ТЯП_Лекс_Анализ
                 return false;
             while (EQ(","))
             {
+                GetLexem();
                 if (!Id())
                     return false;
             }
@@ -85,6 +92,7 @@ namespace ТЯП_Лекс_Анализ
         {
             if (IsID())
             {
+                GetLexem();
                 return true;
             }
             else
@@ -95,7 +103,6 @@ namespace ТЯП_Лекс_Анализ
         }
         private bool Type()
         {
-            GetLexem();
             if (EQ("integer") || EQ("real") || EQ("boolean"))
             {
                 GetLexem();
@@ -122,7 +129,15 @@ namespace ТЯП_Лекс_Анализ
                 int numberTable;
                 int indexInTable;
                 string lex = _listLexAnaliz[_index];
-                numberTable = int.Parse(lex[0].ToString());
+                try
+                {
+                    numberTable = int.Parse(lex[0].ToString());
+                }
+                catch(Exception e)
+                {
+                    ErrorMessage("Программа должна заканчиваться символом }");
+                    return;
+                }
                 indexInTable = int.Parse(lex[2].ToString());
                 switch (numberTable)
                 {

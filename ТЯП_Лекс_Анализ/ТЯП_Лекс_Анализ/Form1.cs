@@ -97,10 +97,7 @@ namespace ТЯП_Лекс_Анализ
 
         private void SyntaxAnalisButton_Click(object sender, EventArgs e)
         {
-            if (AnalisResultTextBox.Text == "")
-            {
-                CreateAnalisButton_Click(new object(), new EventArgs());
-            }
+            CreateAnalisButton_Click(new object(), new EventArgs());
             string arg = AnalisResultTextBox.Text.Replace("(", "");
             arg = arg.Replace(")", "");
             arg = arg.TrimStart(' ');
