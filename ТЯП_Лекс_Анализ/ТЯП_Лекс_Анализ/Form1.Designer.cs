@@ -97,6 +97,7 @@ namespace ТЯП_Лекс_Анализ
             this.ProgramtextTextBox = new System.Windows.Forms.TextBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.AnalisResultTextBox = new System.Windows.Forms.TextBox();
+            this.SyntaxAnalisButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TableReservWord)).BeginInit();
@@ -137,9 +138,9 @@ namespace ТЯП_Лекс_Анализ
             // 
             this.CreateAnalisButton.Location = new System.Drawing.Point(12, 12);
             this.CreateAnalisButton.Name = "CreateAnalisButton";
-            this.CreateAnalisButton.Size = new System.Drawing.Size(192, 32);
+            this.CreateAnalisButton.Size = new System.Drawing.Size(255, 32);
             this.CreateAnalisButton.TabIndex = 1;
-            this.CreateAnalisButton.Text = "Выполнить анализ";
+            this.CreateAnalisButton.Text = "Выполнить лексический анализ";
             this.CreateAnalisButton.UseVisualStyleBackColor = true;
             this.CreateAnalisButton.Click += new System.EventHandler(this.CreateAnalisButton_Click);
             // 
@@ -365,6 +366,16 @@ namespace ТЯП_Лекс_Анализ
             this.AnalisResultTextBox.TabIndex = 0;
             this.AnalisResultTextBox.TextChanged += new System.EventHandler(this.AnalisResultTextBox_TextChanged);
             // 
+            // SyntaxAnalisButton
+            // 
+            this.SyntaxAnalisButton.Location = new System.Drawing.Point(289, 12);
+            this.SyntaxAnalisButton.Name = "SyntaxAnalisButton";
+            this.SyntaxAnalisButton.Size = new System.Drawing.Size(265, 32);
+            this.SyntaxAnalisButton.TabIndex = 7;
+            this.SyntaxAnalisButton.Text = "Выполнить синтаксический анализ";
+            this.SyntaxAnalisButton.UseVisualStyleBackColor = true;
+            this.SyntaxAnalisButton.Click += new System.EventHandler(this.SyntaxAnalisButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -372,6 +383,7 @@ namespace ТЯП_Лекс_Анализ
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1392, 789);
+            this.Controls.Add(this.SyntaxAnalisButton);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
@@ -427,6 +439,7 @@ namespace ТЯП_Лекс_Анализ
         private System.Windows.Forms.DataGridView TableIdentifications;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.Button SyntaxAnalisButton;
     }
 }
 

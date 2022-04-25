@@ -13,6 +13,7 @@ namespace ТЯП_Лекс_Анализ
     public partial class Form1 : Form
     {
         LexicalAnalyzer lexicalAnalyzer;
+        SyntaxAnalizer syntaxAnalizer;
         public Form1()
         {
             InitializeComponent();
@@ -36,6 +37,10 @@ namespace ТЯП_Лекс_Анализ
             lexicalAnalyzer.NewTI += AddNewRecordInTI;
             lexicalAnalyzer.NewTN += AddNewRecordInTN;
             lexicalAnalyzer.OutResult += Out;
+        }
+        public void ErrorMessage(string errMsg)
+        {
+            ResultTextBox.Text = errMsg;
         }
         public void Out(string s)
         {
@@ -70,9 +75,9 @@ namespace ТЯП_Лекс_Анализ
             AnalisResultTextBox.Text = "";
             lexicalAnalyzer.ProgramText = ProgramtextTextBox.Text;
             if (lexicalAnalyzer.Scaner())
-                ResultTextBox.Text = "Анализ выполнен успешно";
+                ResultTextBox.Text = "Лексический анализ выполнен успешно";
             else
-                ResultTextBox.Text = "Ошибка проведения анализа";
+                ResultTextBox.Text = "Ошибка проведения лексического анализа";
         }
 
         private void groupBox5_Enter(object sender, EventArgs e)
@@ -89,5 +94,36 @@ namespace ТЯП_Лекс_Анализ
         {
 
         }
+
+        private void SyntaxAnalisButton_Click(object sender, EventArgs e)
+        {
+            if (AnalisResultTextBox.Text == "")
+            {
+                CreateAnalisButton_Click(new object(), new EventArgs());
+            }
+            string arg = AnalisResultTextBox.Text.Replace("(", "");
+            arg = arg.Replace(")", "");
+            arg = arg.TrimStart(' ');
+            string[] listAnalizer = arg.Split(' ');
+            Dictionary<int, string> tablerw = new Dictionary<int, string>();
+            Dictionary<int, string> tablelimiter = new Dictionary<int, string>();
+            Dictionary<int, string> tableind = new Dictionary<int, string>();
+            for (int i = 0; i < TableReservWord.Rows.Count; i++)
+            {
+                tablerw.Add(Convert.ToInt32(TableReservWord.Rows[i].Cells[0].Value), Convert.ToString(TableReservWord.Rows[i].Cells[1].Value));
+            }
+            for (int i = 0; i < LimiterTable.Rows.Count; i++)
+            {
+                tablelimiter.Add(Convert.ToInt32(LimiterTable.Rows[i].Cells[0].Value), Convert.ToString(LimiterTable.Rows[i].Cells[1].Value));
+            }
+            for (int i = 0; i < TableIdentifications.Rows.Count; i++)
+            {
+                tableind.Add(Convert.ToInt32(TableIdentifications.Rows[i].Cells[0].Value), Convert.ToString(TableIdentifications.Rows[i].Cells[1]));
+            }
+            syntaxAnalizer = new SyntaxAnalizer(listAnalizer, tablerw, tableind, tablelimiter);
+            syntaxAnalizer.ErrorMessage += ErrorMessage;
+            syntaxAnalizer.Pr();
+        }
     }
+    
 }
