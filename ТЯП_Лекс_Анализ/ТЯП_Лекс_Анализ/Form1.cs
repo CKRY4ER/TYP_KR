@@ -49,12 +49,12 @@ namespace ТЯП_Лекс_Анализ
         public void AddNewRecordInTI(string s)
         {
             TableIdentifications.Rows.Add(Convert.ToInt32(TableIdentifications.Rows.Count + 1), s);
-            Out($"(4, {TableIdentifications.Rows.Count})");
+            Out($"(4,{TableIdentifications.Rows.Count})");
         }
         public void AddNewRecordInTN(string s)
         {
             TableNumbers.Rows.Add(Convert.ToInt32(TableNumbers.Rows.Count + 1), s);
-            AnalisResultTextBox.Text += $" (3, {TableNumbers.Rows.Count})";
+            AnalisResultTextBox.Text += $" (3,{TableNumbers.Rows.Count})";
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -118,7 +118,7 @@ namespace ТЯП_Лекс_Анализ
             }
             for (int i = 0; i < TableIdentifications.Rows.Count; i++)
             {
-                tableind.Add(Convert.ToInt32(TableIdentifications.Rows[i].Cells[0].Value), Convert.ToString(TableIdentifications.Rows[i].Cells[1]));
+                tableind.Add(Convert.ToInt32(TableIdentifications.Rows[i].Cells[0].Value), Convert.ToString(TableIdentifications.Rows[i].Cells[1].Value));
             }
             syntaxAnalizer = new SyntaxAnalizer(listAnalizer, tablerw, tableind, tablelimiter);
             syntaxAnalizer.ErrorMessage += ErrorMessage;
