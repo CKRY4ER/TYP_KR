@@ -194,6 +194,7 @@ namespace ТЯП_Лекс_Анализ
                         }
                         else if (Look(Tables.TI) != 0)
                         {
+                            Out(Tables.TI, Look(Tables.TI));
                             CS = States.H;
                         }
                         else

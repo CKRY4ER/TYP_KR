@@ -33,10 +33,14 @@ namespace ТЯП_Лекс_Анализ
                 ErrorMessage("Программа должна начинаться символом {");
                 return;
             }
-            while(_lexem!="}")
+            while(_lexem!="}" && WhosNext())
             {
-                WhosNext();
                 GetLexem();
+            }
+            if (_lexem!="}")
+            {
+                return;
+                
             }
             //if (!WhosNext())
             //    return;
@@ -70,10 +74,6 @@ namespace ТЯП_Лекс_Анализ
             }
             else
                 ErrorMessage("Описание переменных должно начинаться c dim");
-            return true;
-        }
-        private bool Oper()
-        {
             return true;
         }
         private bool Sid()
@@ -122,6 +122,208 @@ namespace ТЯП_Лекс_Анализ
                 return false;
             }
         }
+        private bool Oper()
+        {
+            if (EQ("begin"))
+            {
+                if (!Sostov())
+                    return false;
+                return true;
+            }
+            else if (IsID())
+            {
+                if (!Prisvaiv())
+                    return false;
+                return true;
+            }
+            //else if (EQ("if"))
+            //{
+            //    if (!Uslovn())
+            //        return false;
+            //    return true;
+            //}
+            //else if (EQ("for"))
+            //{
+            //    if (!FiksirCikl())
+            //        return false;
+            //    return true;
+            //}
+            //else if (EQ("while"))
+            //{
+            //    if (!UslovCikl())
+            //        return false;
+            //    return true;
+            //}
+            //else if (EQ("writeln"))
+            //{
+            //    if (!Vivod())
+            //        return false;
+            //    return true;
+            //}
+            //else if (EQ("readln"))
+            //{
+            //    if (!Vvod())
+            //        return false;
+            //    return true;
+            //}
+            else
+            {
+                ErrorMessage("Не понятно ниче!!!");
+                return false;
+            }
+        }
+        private bool Sostov()
+        {
+            GetLexem();
+            if (!Opers())
+            {
+                ErrorMessage("Ошибка в составлении составного оператора");
+                return false;
+            }
+            
+            if (EQ("end"))
+                return true;
+            ErrorMessage("Составной оператор должен заканчиваться: end");
+            return false;
+        }
+        private bool Opers()
+        {
+            if (!Oper())
+            {
+                ErrorMessage("Ошибка в составлении операторов внутри составного оператора");
+                return false;
+            }
+            while (EQ(";"))
+            {
+                GetLexem();
+                if (Oper())
+                {
+                    ErrorMessage("Ошибка в составлении операторов внутри составного оператора");
+                    return false;
+                }
+            }
+            return true;
+        }
+        private bool Prisvaiv()
+        {
+            GetLexem();
+            if (!EQ(":="))
+            {
+                ErrorMessage("Не верный синтаксис оператора присваивания: :=");
+                return false;
+            }
+            if (!Viraj())
+            { 
+                return false;
+            }
+            //GetLexem();
+            if (EQ(";"))
+            {
+                return true;
+            }
+            else
+            {
+                ErrorMessage("Каждая строка должна заканчиваться символом: ;");
+                return false;
+            }
+        }
+        private bool Viraj()
+        {
+            GetLexem();
+            if (!Operand())
+                return false;
+            if (OperGrupOtn())
+            {
+                GetLexem();
+                if (!Viraj())
+                    return false;
+            }
+            return true;
+        }
+        private bool OperGrupOtn()
+        {
+            if (_lexem == "!=" || _lexem == "==" || _lexem == "<" || _lexem == "<=" || _lexem == ">" || _lexem == ">=")
+                return true;
+            return false;
+        }
+        private bool Operand()
+        {
+            if (!Slagaem())
+                return false;
+            if (OperGrupSloj())
+            {
+                GetLexem();
+                if (!Operand())
+                    return false;
+            }
+            return true;
+        }
+        private bool OperGrupSloj()
+        {
+            if (_lexem == "+" || _lexem == "-" || _lexem == "||")
+                return true;
+            return false;
+        }
+        private bool Slagaem()
+        {
+            if (!Mnoj())
+                return false;
+            if (OperGrupMnoj())
+            {
+                GetLexem();
+                if (!Slagaem())
+                    return false;
+            }
+            return true;
+        }
+        private bool OperGrupMnoj()
+        {
+            if (_lexem == "*" || _lexem == "/" || _lexem == "&&")
+                return true;
+            return false;
+        }
+        private bool Mnoj()
+        {
+            if (IsID() || IsDigit() || _lexem == "true" || _lexem == "false") 
+            {
+                GetLexem();
+                return true;
+            }
+            if (YnarOper())
+            {
+                GetLexem();
+                if (!Mnoj())
+                    return false;
+            }
+            else if (_lexem == "(") 
+            {
+                if (!Viraj())
+                    return false;
+                if (EQ(")"))
+                {
+                    GetLexem();
+                    return true;
+                }
+                else
+                {
+                    ErrorMessage("Ошибка в построении выражения: пропущена закрывающая скобка");
+                    return false;
+                }
+                
+            }
+            else
+            {
+                ErrorMessage("Ошибка в построении выражения");
+                return false;
+            }
+            return false;
+        }
+        private bool YnarOper()
+        {
+            if (_lexem == "!")
+                return true;
+            return false;
+        }
         private void GetLexem()
         {
             if (_index < _listLexAnaliz.Length)
@@ -138,7 +340,13 @@ namespace ТЯП_Лекс_Анализ
                     ErrorMessage("Программа должна заканчиваться символом }");
                     return;
                 }
-                indexInTable = int.Parse(lex[2].ToString());
+                if (lex.Length > 3)
+                {
+                    string numb = lex[2].ToString() + lex[3].ToString();
+                    indexInTable = int.Parse(numb);
+                }
+                else
+                    indexInTable = int.Parse(lex[2].ToString());
                 switch (numberTable)
                 {
                     case (1):
