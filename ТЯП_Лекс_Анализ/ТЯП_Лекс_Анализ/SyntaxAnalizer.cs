@@ -40,7 +40,6 @@ namespace ТЯП_Лекс_Анализ
             if (_lexem!="}")
             {
                 return;
-                
             }
             //if (!WhosNext())
             //    return;
@@ -136,12 +135,12 @@ namespace ТЯП_Лекс_Анализ
                     return false;
                 return true;
             }
-            //else if (EQ("if"))
-            //{
-            //    if (!Uslovn())
-            //        return false;
-            //    return true;
-            //}
+            else if (EQ("if"))
+            {
+                if (!Uslovn())
+                    return false;
+                return true;
+            }
             //else if (EQ("for"))
             //{
             //    if (!FiksirCikl())
@@ -166,21 +165,20 @@ namespace ТЯП_Лекс_Анализ
             //        return false;
             //    return true;
             //}
-            else
-            {
-                ErrorMessage("Не понятно ниче!!!");
-                return false;
-            }
+            //else
+            //{
+            //    ErrorMessage("Не понятно ниче!!!");
+            //    return false;
+            //}
+            return false;
         }
         private bool Sostov()
         {
             GetLexem();
             if (!Opers())
             {
-                ErrorMessage("Ошибка в составлении составного оператора");
                 return false;
             }
-            
             if (EQ("end"))
                 return true;
             ErrorMessage("Составной оператор должен заканчиваться: end");
@@ -196,7 +194,7 @@ namespace ТЯП_Лекс_Анализ
             while (EQ(";"))
             {
                 GetLexem();
-                if (Oper())
+                if (!Oper() && !EQ("end") && !EQ("else"))
                 {
                     ErrorMessage("Ошибка в составлении операторов внутри составного оператора");
                     return false;
@@ -227,6 +225,41 @@ namespace ТЯП_Лекс_Анализ
                 return false;
             }
         }
+        private bool Uslovn()
+        {
+            GetLexem();
+            if (!EQ("("))
+            {
+                ErrorMessage("Выражение в операторе if должно заключаться в скобки");
+                return false;
+            }
+            if (!Viraj())
+                return false;
+            //GetLexem();
+            if (!EQ(")"))
+            {
+                ErrorMessage("Выражение в операторе if должно заключаться в скобки");
+                return false;
+            }
+            GetLexem();
+            if (!Oper())
+            {
+                ErrorMessage("Ошибка в построении оператора if");
+                return false;
+            }
+            GetLexem();
+            if (EQ("else"))
+            {
+                GetLexem();
+                if (!Oper())
+                {
+                    ErrorMessage("Ошибка в построении оператора внутри блока else");
+                    return false;
+                }
+            }
+            return true;
+
+        }
         private bool Viraj()
         {
             GetLexem();
@@ -234,7 +267,7 @@ namespace ТЯП_Лекс_Анализ
                 return false;
             if (OperGrupOtn())
             {
-                GetLexem();
+                //GetLexem();
                 if (!Viraj())
                     return false;
             }

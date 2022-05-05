@@ -64,6 +64,7 @@ namespace ТЯП_Лекс_Анализ
             LimiterTable.Rows.Add(22, "!=");
             LimiterTable.Rows.Add(23, "/*");
             LimiterTable.Rows.Add(24, "*/");
+            LimiterTable.Rows.Add(25, "==");
         }
 
         #region Код, автоматически созданный конструктором форм Windows
@@ -339,6 +340,7 @@ namespace ТЯП_Лекс_Анализ
             // 
             // ProgramtextTextBox
             // 
+            this.ProgramtextTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ProgramtextTextBox.Location = new System.Drawing.Point(6, 21);
             this.ProgramtextTextBox.Multiline = true;
             this.ProgramtextTextBox.Name = "ProgramtextTextBox";
