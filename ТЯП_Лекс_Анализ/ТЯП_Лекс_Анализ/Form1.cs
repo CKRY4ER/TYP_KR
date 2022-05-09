@@ -98,7 +98,7 @@ namespace ТЯП_Лекс_Анализ
 
         private void SyntaxAnalisButton_Click(object sender, EventArgs e)
         {
-                CreateAnalisButton_Click(new object(), new EventArgs());
+            CreateAnalisButton_Click(new object(), new EventArgs());
             if (ResultTextBox.Text == "Лексический анализ выполнен успешно")
             {
                 ResultTextBox.Text = "";
@@ -109,6 +109,7 @@ namespace ТЯП_Лекс_Анализ
                 Dictionary<int, string> tablerw = new Dictionary<int, string>();
                 Dictionary<int, string> tablelimiter = new Dictionary<int, string>();
                 Dictionary<int, string> tableind = new Dictionary<int, string>();
+                Dictionary<int, int> tableNumber = new Dictionary<int, int>();
                 for (int i = 0; i < TableReservWord.Rows.Count; i++)
                 {
                     tablerw.Add(Convert.ToInt32(TableReservWord.Rows[i].Cells[0].Value), Convert.ToString(TableReservWord.Rows[i].Cells[1].Value));
@@ -121,9 +122,20 @@ namespace ТЯП_Лекс_Анализ
                 {
                     tableind.Add(Convert.ToInt32(TableIdentifications.Rows[i].Cells[0].Value), Convert.ToString(TableIdentifications.Rows[i].Cells[1].Value));
                 }
-                syntaxAnalizer = new SyntaxAnalizer(listAnalizer, tablerw, tableind, tablelimiter);
+                for (int i = 0; i < TableNumbers.Rows.Count; i++)
+                {
+                    tableNumber.Add(Convert.ToInt32(TableNumbers.Rows[i].Cells[0].Value), Convert.ToInt32(TableNumbers.Rows[i].Cells[1].Value));
+                }
+                syntaxAnalizer = new SyntaxAnalizer(listAnalizer, tablerw, tableind, tablelimiter, tableNumber);
                 syntaxAnalizer.ErrorMessage += ErrorMessage;
-                syntaxAnalizer.Pr();
+                try
+                {
+                    syntaxAnalizer.Pr();
+                }
+                catch (Exception ex)
+                {
+                    ResultTextBox.Text = ex.Message;
+                }
                 if (ResultTextBox.Text == "")
                     ResultTextBox.Text = "Синтаксический анализ успешно выполнен.";
             }

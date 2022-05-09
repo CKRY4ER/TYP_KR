@@ -14,348 +14,233 @@ namespace ТЯП_Лекс_Анализ
         private Dictionary<int, string> _tableRW;
         private Dictionary<int, string> _tableInd;
         private Dictionary<int, string> _tableLimiter;
+        private Dictionary<int, int> _tableNumber;
         private string[] _listLexAnaliz;
         private int _index = 0;
-        public SyntaxAnalizer(string[] list, Dictionary<int, string> tableRW, Dictionary<int, string> tableInd, Dictionary<int, string> tableLimiter)
+        public SyntaxAnalizer(string[] list, Dictionary<int, string> tableRW, Dictionary<int, string> tableInd, Dictionary<int, string> tableLimiter, Dictionary<int, int> tableNumber)
         {
             _tableInd = tableInd;
             _tableLimiter = tableLimiter;
             _tableRW = tableRW;
             _listLexAnaliz = list;
+            _tableNumber = tableNumber;
         }
         public void Pr()
         {
             GetLexem();
-            if (EQ("{"))
-                GetLexem();
-            else
+            if (!EQ("{"))
             {
-                ErrorMessage("Программа должна начинаться символом {");
-                return;
+                throw new Exception("Программа должна начинаться символом: {");
             }
-            while(_lexem!="}" && WhosNext())
+            GetLexem();
+            while (!EQ("}") && WhosNext())
             {
                 GetLexem();
             }
-            if (_lexem!="}")
-            {
-                return;
-            }
-            //if (!WhosNext())
-            //    return;
-            //GetLexem();
-            //if (!EQ("}"))
-            //    ErrorMessage("Программа должна заканчиваться символом }");
+            if (!EQ("}"))
+                throw new Exception("Программа должна заканчиваться символом: }");
         }
         private bool WhosNext()
         {
+            //GetLexem();
             if (EQ("dim"))
             {
-                if (!Opis())
-                    return false;
+                Opis();
+                return true;
             }
-            else
-            {
-                if (!Oper())
-                    return false;
-            }
+            Oper();
             return true;
         }
-        private bool Opis()
+        private void Opis()
         {
             if (EQ("dim"))
             {
-                GetLexem();
-                if (!Sid())
-                    return false;
-                if (!Type())
-                    return false;
+                Sid();
+                Type();
             }
             else
-                ErrorMessage("Описание переменных должно начинаться c dim");
-            return true;
+                throw new Exception("Ошибка в составлении описания");
         }
-        private bool Sid()
+        private void Sid()
         {
-            if (!Id())
-                return false;
+            GetLexem();
+            Id();
             while (EQ(","))
             {
                 GetLexem();
-                if (!Id())
-                    return false;
+                Id();
             }
-            return true;
         }
-        private bool Id()
+        private void Id()
         {
-            if (IsID())
-            {
-                GetLexem();
-                return true;
-            }
-            else
-            {
-                ErrorMessage("Не верный идентификатор");
-                return false;
-            }
+            if (!IsID())
+                throw new Exception("В описании должен быть идентификатор или список идентификаторов");
+            GetLexem();
         }
-        private bool Type()
+        private void Type()
         {
             if (EQ("integer") || EQ("real") || EQ("boolean"))
             {
                 GetLexem();
-                if (EQ(";"))
-                {
-                    return true;
-                }
-                else
-                {
-                    ErrorMessage("Каждая строка должна заканчиваться символом ;");
-                    return false;
-                }
+                if (!EQ(";"))
+                    throw new Exception("Пропущен символ признака конца строки: ;");
             }
             else
-            {
-                ErrorMessage("Не верный тип переменной");
-                return false;
-            }
+                throw new Exception("Не верный тип данных. Доступные типы данных: integer, real, boolean");
         }
-        private bool Oper()
+        private void Oper()
         {
             if (EQ("begin"))
-            {
-                if (!Sostov())
-                    return false;
-                return true;
-            }
+                Sostav();
             else if (IsID())
             {
-                if (!Prisvaiv())
-                    return false;
-                return true;
+                Prisvaiv();
+                if (!EQ(";"))
+                    throw new Exception("Оператор присваивания вне цикла for должен оканчиваться символом: ;");
             }
             else if (EQ("if"))
             {
-                if (!Uslovn())
-                    return false;
-                return true;
+                Yslov();
             }
-            //else if (EQ("for"))
-            //{
-            //    if (!FiksirCikl())
-            //        return false;
-            //    return true;
-            //}
-            //else if (EQ("while"))
-            //{
-            //    if (!UslovCikl())
-            //        return false;
-            //    return true;
-            //}
-            //else if (EQ("writeln"))
-            //{
-            //    if (!Vivod())
-            //        return false;
-            //    return true;
-            //}
-            //else if (EQ("readln"))
-            //{
-            //    if (!Vvod())
-            //        return false;
-            //    return true;
-            //}
-            //else
-            //{
-            //    ErrorMessage("Не понятно ниче!!!");
-            //    return false;
-            //}
-            return false;
-        }
-        private bool Sostov()
-        {
-            GetLexem();
-            if (!Opers())
+            else if (EQ("for"))
             {
-                return false;
+                FiksCikla();
             }
-            if (EQ("end"))
-                return true;
-            ErrorMessage("Составной оператор должен заканчиваться: end");
-            return false;
-        }
-        private bool Opers()
-        {
-            if (!Oper())
+            else if (EQ("while"))
             {
-                ErrorMessage("Ошибка в составлении операторов внутри составного оператора");
-                return false;
-            }
-            while (EQ(";"))
-            {
-                GetLexem();
-                if (!Oper() && !EQ("end") && !EQ("else"))
-                {
-                    ErrorMessage("Ошибка в составлении операторов внутри составного оператора");
-                    return false;
-                }
-            }
-            return true;
-        }
-        private bool Prisvaiv()
-        {
-            GetLexem();
-            if (!EQ(":="))
-            {
-                ErrorMessage("Не верный синтаксис оператора присваивания: :=");
-                return false;
-            }
-            if (!Viraj())
-            { 
-                return false;
-            }
-            //GetLexem();
-            if (EQ(";"))
-            {
-                return true;
+                YslovCikla();
             }
             else
             {
-                ErrorMessage("Каждая строка должна заканчиваться символом: ;");
-                return false;
+                throw new Exception("Ошибка в построении оператора (неизвестный оператор)");
             }
         }
-        private bool Uslovn()
+        private void Sostav()
+        {
+            GetLexem();
+            Opers();
+            if (!EQ("end"))
+                throw new Exception("Составной опреатор не закрыт. Пропущенно ключевое слово: end");
+        }
+        private void Yslov()
         {
             GetLexem();
             if (!EQ("("))
-            {
-                ErrorMessage("Выражение в операторе if должно заключаться в скобки");
-                return false;
-            }
-            if (!Viraj())
-                return false;
-            //GetLexem();
+                throw new Exception("Ошибка в составлении выражения внутри оператора if: выражение должно заключаться в скобки");
+            Viraj();
             if (!EQ(")"))
-            {
-                ErrorMessage("Выражение в операторе if должно заключаться в скобки");
-                return false;
-            }
+                throw new Exception("Ошибка в составлении выражения внутри оператора if: выражение должно заключаться в скобки");
             GetLexem();
-            if (!Oper())
-            {
-                ErrorMessage("Ошибка в построении оператора if");
-                return false;
-            }
+            Oper();
             GetLexem();
-            if (EQ("else"))
+            if (EQ("else")) // Опастное место
             {
                 GetLexem();
-                if (!Oper())
-                {
-                    ErrorMessage("Ошибка в построении оператора внутри блока else");
-                    return false;
-                }
+                Oper();
             }
-            return true;
-
         }
-        private bool Viraj()
+        private void FiksCikla()
         {
             GetLexem();
-            if (!Operand())
-                return false;
-            if (OperGrupOtn())
+            Prisvaiv();
+            if (!EQ("to"))
+                throw new Exception("Ошибка в построении оператороа фиксированного цикла.");
+            Viraj();
+            if (EQ("step"))
             {
-                //GetLexem();
-                if (!Viraj())
-                    return false;
+                Viraj();
             }
-            return true;
+            if (!EQ("next"))
+                throw new Exception("Ошибка в построении оператороа фиксированного цикла.");
+            GetLexem();
+            Oper();
+            
         }
-        private bool OperGrupOtn()
+        private void YslovCikla()
         {
-            if (_lexem == "!=" || _lexem == "==" || _lexem == "<" || _lexem == "<=" || _lexem == ">" || _lexem == ">=")
-                return true;
-            return false;
+            GetLexem();
+            if (!EQ("("))
+                throw new Exception("Ошибка в составлении выражения внутри оператора while: выражение должно заключаться в скобки");
+            Viraj();
+            if (!EQ(")"))
+                throw new Exception("Ошибка в составлении выражения внутри оператора while: выражение должно заключаться в скобки");
+            GetLexem();
+            Oper();
         }
-        private bool Operand()
+        private void Opers()
         {
-            if (!Slagaem())
-                return false;
-            if (OperGrupSloj())
+            Oper();
+            while (EQ(";"))
             {
                 GetLexem();
-                if (!Operand())
-                    return false;
+                if (!EQ("end") && !EQ("else"))
+                    Opers();
             }
-            return true;
         }
-        private bool OperGrupSloj()
+        private void Prisvaiv()
         {
-            if (_lexem == "+" || _lexem == "-" || _lexem == "||")
-                return true;
-            return false;
-        }
-        private bool Slagaem()
-        {
-            if (!Mnoj())
-                return false;
-            if (OperGrupMnoj())
+            if (!IsID())
+                throw new Exception("Ошибка в построении оператора присваивания");
+            GetLexem();
+            if (EQ(":="))
             {
-                GetLexem();
-                if (!Slagaem())
-                    return false;
-            }
-            return true;
-        }
-        private bool OperGrupMnoj()
-        {
-            if (_lexem == "*" || _lexem == "/" || _lexem == "&&")
-                return true;
-            return false;
-        }
-        private bool Mnoj()
-        {
-            if (IsID() || IsDigit() || _lexem == "true" || _lexem == "false") 
-            {
-                GetLexem();
-                return true;
-            }
-            if (YnarOper())
-            {
-                GetLexem();
-                if (!Mnoj())
-                    return false;
-            }
-            else if (_lexem == "(") 
-            {
-                if (!Viraj())
-                    return false;
-                if (EQ(")"))
-                {
-                    GetLexem();
-                    return true;
-                }
-                else
-                {
-                    ErrorMessage("Ошибка в построении выражения: пропущена закрывающая скобка");
-                    return false;
-                }
-                
+                Viraj();
             }
             else
-            {
-                ErrorMessage("Ошибка в построении выражения");
-                return false;
-            }
-            return false;
+                throw new Exception("Ошибка оператора присваивания. Ожидалось: :=");
         }
-        private bool YnarOper()
+        private void Viraj()
         {
-            if (_lexem == "!")
-                return true;
-            return false;
+            GetLexem();
+            Soperand();  
+        }
+        private void Soperand()
+        {
+            Operand();
+            while (OperGroupOtn())
+            {
+                GetLexem();
+                Soperand();
+            }
+        }
+        private void Operand()
+        {
+            Slagaemoe();
+            if (OperGroupSloj())
+            {
+                GetLexem();
+                Operand();
+            }
+        }
+        private void Slagaemoe()
+        {
+            Mnoj();
+            if (OperGroupMnoj())
+            {
+                GetLexem();
+                Slagaemoe();
+            }
+        }
+        private void Mnoj()
+        {
+            if (IsID() || IsDigit() || EQ("true") || EQ("false"))
+            {
+                GetLexem();
+            }
+            else if (YnarOper())
+            {
+                GetLexem();
+                Mnoj();
+            }
+            else if (EQ("("))
+            {
+                Viraj();
+                if (!EQ(")"))
+                    throw new Exception("Ошибка в построении выражения: пропущена закрывающая скобка");
+                GetLexem();
+            }
+            else
+                throw new Exception("Ошибка в построении выражения");
         }
         private void GetLexem()
         {
@@ -389,7 +274,7 @@ namespace ТЯП_Лекс_Анализ
                         _lexem = _tableLimiter[indexInTable];
                         break;
                     case (3):
-                        _lexem = "2";
+                        _lexem = _tableNumber[indexInTable].ToString();
                         break;
                     case (4):
                         _lexem = _tableInd[indexInTable];
@@ -414,6 +299,30 @@ namespace ТЯП_Лекс_Анализ
         private bool EQ(string lex)
         {
             return lex == _lexem ? true : false;
+        }
+        private bool OperGroupOtn()
+        {
+            if (EQ("!=") || EQ("==") || EQ("<") || EQ("<=") || EQ(">") || EQ(">="))
+                return true;
+            return false;
+        }
+        private bool OperGroupSloj()
+        {
+            if (EQ("+") || EQ("-") || EQ("||"))
+                return true;
+            return false;
+        }
+        private bool OperGroupMnoj()
+        {
+            if (EQ("*") || EQ("/") || EQ("&&"))
+                return true;
+            return false;
+        }
+        private bool YnarOper()
+        {
+            if (EQ("!"))
+                return true;
+            return false;
         }
     }
 }
