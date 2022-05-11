@@ -48,6 +48,8 @@ namespace ТЯП_Лекс_Анализ
                 Opis();
                 return true;
             }
+            else if (EQ("end"))
+                return true;
             Oper();
             return true;
         }
@@ -74,7 +76,7 @@ namespace ТЯП_Лекс_Анализ
         private void Id()
         {
             if (!IsID())
-                throw new Exception("В описании должен быть идентификатор или список идентификаторов");
+                throw new Exception("Ошибка в списке идентификаторов");
             GetLexem();
         }
         private void Type()
@@ -91,7 +93,11 @@ namespace ТЯП_Лекс_Анализ
         private void Oper()
         {
             if (EQ("begin"))
+            {
                 Sostav();
+                if (EQ(";"))
+                    throw new Exception("ТОчка с запятой после end");
+            }
             else if (IsID())
             {
                 Prisvaiv();
@@ -110,6 +116,12 @@ namespace ТЯП_Лекс_Анализ
             {
                 YslovCikla();
             }
+            else if (EQ("readln"))
+            {
+                Vvod();
+            }
+            else if (EQ("writeln"))
+                Vivod();
             else
             {
                 throw new Exception("Ошибка в построении оператора (неизвестный оператор)");
@@ -167,6 +179,19 @@ namespace ТЯП_Лекс_Анализ
             GetLexem();
             Oper();
         }
+        private void Vvod()
+        {
+
+            Sid();
+            if (!EQ(";"))
+                throw new Exception("Пропущен символ: ;");
+        }
+        private void Vivod()
+        {
+            Sviraj();
+            if (!EQ(";"))
+                throw new Exception("Пропущен символ: ;");
+        }
         private void Opers()
         {
             Oper();
@@ -188,6 +213,14 @@ namespace ТЯП_Лекс_Анализ
             }
             else
                 throw new Exception("Ошибка оператора присваивания. Ожидалось: :=");
+        }
+        private void Sviraj()
+        {
+            Viraj();
+            while (EQ(","))
+            {
+                Sviraj();
+            }
         }
         private void Viraj()
         {
@@ -272,6 +305,12 @@ namespace ТЯП_Лекс_Анализ
                         break;
                     case (2):
                         _lexem = _tableLimiter[indexInTable];
+                        if (_lexem == "/*")
+                        {
+                            _index+=2;
+                            GetLexem();
+                            return;
+                        }
                         break;
                     case (3):
                         _lexem = _tableNumber[indexInTable].ToString();

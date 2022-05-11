@@ -128,6 +128,7 @@ namespace ТЯП_Лекс_Анализ
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ResultTextBox.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.ResultTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ResultTextBox.Location = new System.Drawing.Point(6, 21);
             this.ResultTextBox.Multiline = true;
             this.ResultTextBox.Name = "ResultTextBox";
