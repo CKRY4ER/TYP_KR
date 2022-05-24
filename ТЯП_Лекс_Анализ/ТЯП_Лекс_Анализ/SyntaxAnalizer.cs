@@ -46,236 +46,277 @@ namespace ТЯП_Лекс_Анализ
             if (EQ("dim"))
             {
                 Opis();
+                GetLexem();
+                if (!EQ(";"))
+                    throw new Exception("Пропущен символ ;");
                 return true;
             }
-            else if (EQ("end"))
-                return true;
             Oper();
+			if (!EQ(";"))
+				throw new Exception("Пропущен символ ;");
+            
             return true;
         }
-        private void Opis()
-        {
-            if (EQ("dim"))
-            {
-                Sid();
-                Type();
-            }
-            else
-                throw new Exception("Ошибка в составлении описания");
-        }
-        private void Sid()
-        {
-            GetLexem();
-            Id();
-            while (EQ(","))
-            {
-                GetLexem();
-                Id();
-            }
-        }
-        private void Id()
-        {
-            if (!IsID())
-                throw new Exception("Ошибка в списке идентификаторов");
-            GetLexem();
-        }
-        private void Type()
-        {
-            if (EQ("integer") || EQ("real") || EQ("boolean"))
-            {
-                GetLexem();
-                if (!EQ(";"))
-                    throw new Exception("Пропущен символ признака конца строки: ;");
-            }
-            else
-                throw new Exception("Не верный тип данных. Доступные типы данных: integer, real, boolean");
-        }
-        private void Oper()
-        {
-            if (EQ("begin"))
-            {
-                Sostav();
-                if (EQ(";"))
-                    throw new Exception("ТОчка с запятой после end");
-            }
-            else if (IsID())
-            {
-                Prisvaiv();
-                if (!EQ(";"))
-                    throw new Exception("Оператор присваивания вне цикла for должен оканчиваться символом: ;");
-            }
-            else if (EQ("if"))
-            {
-                Yslov();
-            }
-            else if (EQ("for"))
-            {
-                FiksCikla();
-            }
-            else if (EQ("while"))
-            {
-                YslovCikla();
-            }
-            else if (EQ("readln"))
-            {
-                Vvod();
-            }
-            else if (EQ("writeln"))
-                Vivod();
-            else
-            {
-                throw new Exception("Ошибка в построении оператора (неизвестный оператор)");
-            }
-        }
-        private void Sostav()
-        {
-            GetLexem();
-            Opers();
-            if (!EQ("end"))
-                throw new Exception("Составной опреатор не закрыт. Пропущенно ключевое слово: end");
-        }
-        private void Yslov()
-        {
-            GetLexem();
-            if (!EQ("("))
-                throw new Exception("Ошибка в составлении выражения внутри оператора if: выражение должно заключаться в скобки");
-            Viraj();
-            if (!EQ(")"))
-                throw new Exception("Ошибка в составлении выражения внутри оператора if: выражение должно заключаться в скобки");
-            GetLexem();
-            Oper();
-            GetLexem();
-            if (EQ("else")) // Опастное место
-            {
-                GetLexem();
-                Oper();
-            }
-        }
-        private void FiksCikla()
-        {
-            GetLexem();
-            Prisvaiv();
-            if (!EQ("to"))
-                throw new Exception("Ошибка в построении оператороа фиксированного цикла.");
-            Viraj();
-            if (EQ("step"))
-            {
-                Viraj();
-            }
-            if (!EQ("next"))
-                throw new Exception("Ошибка в построении оператороа фиксированного цикла.");
-            GetLexem();
-            Oper();
-            
-        }
-        private void YslovCikla()
-        {
-            GetLexem();
-            if (!EQ("("))
-                throw new Exception("Ошибка в составлении выражения внутри оператора while: выражение должно заключаться в скобки");
-            Viraj();
-            if (!EQ(")"))
-                throw new Exception("Ошибка в составлении выражения внутри оператора while: выражение должно заключаться в скобки");
-            GetLexem();
-            Oper();
-        }
-        private void Vvod()
-        {
 
-            Sid();
-            if (!EQ(";"))
-                throw new Exception("Пропущен символ: ;");
-        }
-        private void Vivod()
-        {
-            Sviraj();
-            if (!EQ(";"))
-                throw new Exception("Пропущен символ: ;");
-        }
-        private void Opers()
-        {
-            Oper();
-            while (EQ(";"))
-            {
-                GetLexem();
-                if (!EQ("end") && !EQ("else"))
-                    Opers();
-            }
-        }
-        private void Prisvaiv()
-        {
-            if (!IsID())
-                throw new Exception("Ошибка в построении оператора присваивания");
-            GetLexem();
-            if (EQ(":="))
-            {
-                Viraj();
-            }
-            else
-                throw new Exception("Ошибка оператора присваивания. Ожидалось: :=");
-        }
-        private void Sviraj()
-        {
-            Viraj();
-            while (EQ(","))
-            {
-                Sviraj();
-            }
-        }
-        private void Viraj()
-        {
-            GetLexem();
-            Soperand();  
-        }
-        private void Soperand()
-        {
-            Operand();
-            while (OperGroupOtn())
-            {
-                GetLexem();
-                Soperand();
-            }
-        }
-        private void Operand()
-        {
-            Slagaemoe();
-            if (OperGroupSloj())
-            {
-                GetLexem();
-                Operand();
-            }
-        }
-        private void Slagaemoe()
-        {
-            Mnoj();
-            if (OperGroupMnoj())
-            {
-                GetLexem();
-                Slagaemoe();
-            }
-        }
-        private void Mnoj()
-        {
-            if (IsID() || IsDigit() || EQ("true") || EQ("false"))
-            {
-                GetLexem();
-            }
-            else if (YnarOper())
-            {
-                GetLexem();
-                Mnoj();
-            }
-            else if (EQ("("))
-            {
-                Viraj();
-                if (!EQ(")"))
-                    throw new Exception("Ошибка в построении выражения: пропущена закрывающая скобка");
-                GetLexem();
-            }
-            else
-                throw new Exception("Ошибка в построении выражения");
-        }
-        private void GetLexem()
+		private void Opis() 
+		{
+			if (EQ("dim"))
+			{
+				Sid();
+				Type();
+			}
+			else
+				throw new Exception("Ошибка в составлении оператора");
+		}
+
+		private void Sid()
+		{
+			GetLexem();
+			Id();
+			while (EQ(","))
+			{
+				GetLexem();
+				Id();
+			}
+		}
+
+		private void Id()
+		{
+			if (!IsID())
+				throw new Exception("Ошибка в списке идентификаторов");
+			GetLexem();
+		}
+
+		private void Type()
+		{
+			if (!EQ("integer") && !EQ("real") && !EQ("boolean"))
+			{
+				throw new Exception("Не верный тип данных. Доступные типы данных: integer, real, boolean");
+			}
+		}
+
+		private void Oper()
+		{
+			if (EQ("begin"))
+			{
+				Sostav();
+			}
+			else if (IsID())
+			{
+				Prisvaiv();
+			}
+			else if (EQ("if"))
+			{
+				Yslov();
+			}
+			else if (EQ("for"))
+			{
+				FiksCikla();
+			}
+			else if (EQ("while"))
+			{
+				YslovCikla();
+			}
+			else if (EQ("readln"))
+			{
+				Vvod();
+			}
+			else if (EQ("writeln")) 
+			{
+				Vivod();
+			}
+			else
+			{
+				throw new Exception("Ошибка в построении оператора (неизвестный оператор) или лишний символ ;");
+			}
+		}
+
+		private void Sostav()
+		{
+			GetLexem();
+			Opers();
+			if (!EQ("end"))
+				throw new Exception("Составной опреатор не закрыт. Пропущенно ключевое слово: end");
+			GetLexem();
+		}
+
+		private void Opers()
+		{
+			Oper();
+			while (EQ(";"))
+			{
+				GetLexem();
+				Opers();
+			}
+		}
+
+		private void Prisvaiv()
+		{
+			if (!IsID())
+				throw new Exception("Ошибка в построении оператора присваивания");
+			GetLexem();
+			if (EQ(":="))
+			{
+				Viraj();
+			}
+			else
+				throw new Exception("Ошибка оператора присваивания. Ожидалось: :=");
+		}
+
+		private void Yslov()
+		{
+			GetLexem();
+			if (!EQ("("))
+				throw new Exception("Ошибка в составлении выражения внутри оператора if: выражение должно заключаться в скобки");
+			Viraj();
+			if (!EQ(")"))
+				throw new Exception("Ошибка в составлении выражения внутри оператора if: выражение должно заключаться в скобки");
+			GetLexem();
+			Oper();
+			if (EQ("else")) // Опастное место
+			{
+				GetLexem();
+				Oper();
+			}
+		}
+
+		private void FiksCikla()
+		{
+			GetLexem();
+			Prisvaiv();
+			
+			if (!EQ("to"))
+				throw new Exception("Ошибка в построении оператороа фиксированного цикла.");
+
+			Viraj();
+
+			if (EQ("step"))
+			{
+				Viraj();
+			}
+			Oper();
+			if (!EQ("next"))
+				throw new Exception("Ошибка в построении оператороа фиксированного цикла.");
+			GetLexem();
+		}
+
+		private void YslovCikla()
+		{
+			GetLexem();
+			if (!EQ("("))
+				throw new Exception("Ошибка в составлении выражения внутри оператора while: выражение должно заключаться в скобки");
+			Viraj();
+			if (!EQ(")"))
+				throw new Exception("Ошибка в составлении выражения внутри оператора while: выражение должно заключаться в скобки");
+			GetLexem();
+			Oper();
+		}
+
+		private void Vvod()
+		{
+			Sid();
+		}
+
+		private void Vivod()
+		{
+			Sviraj();
+		}
+		private void Sviraj()
+		{
+			Viraj();
+			while (EQ(","))
+			{
+				Sviraj();
+			}
+		}
+		private void Viraj()
+		{
+			GetLexem();
+			Soperand();
+		}
+
+		private void Soperand()
+		{
+			Operand();
+			while (OperGroupOtn())
+			{
+				GetLexem();
+				Soperand();
+			}
+		}
+
+		private void Operand()
+		{
+			Slagaemoe();
+			if (OperGroupSloj())
+			{
+				GetLexem();
+				Operand();
+			}
+		}
+
+		private void Slagaemoe()
+		{
+			Mnoj();
+			if (OperGroupMnoj())
+			{
+				GetLexem();
+				Slagaemoe();
+			}
+		}
+
+		private void Mnoj()
+		{
+			if (IsID() || IsDigit() || EQ("true") || EQ("false"))
+			{
+				GetLexem();
+			}
+			else if (YnarOper())
+			{
+				GetLexem();
+				Mnoj();
+			}
+			else if (EQ("("))
+			{
+				Viraj();
+				if (!EQ(")"))
+					throw new Exception("Ошибка в построении выражения: пропущена закрывающая скобка");
+				GetLexem();
+			}
+			else
+				throw new Exception("Ошибка в построении выражения");
+		}
+
+		private bool OperGroupOtn()
+		{
+			if (EQ("!=") || EQ("==") || EQ("<") || EQ("<=") || EQ(">") || EQ(">="))
+				return true;
+			return false;
+		}
+
+		private bool OperGroupSloj()
+		{
+			if (EQ("+") || EQ("-") || EQ("||"))
+				return true;
+			return false;
+		}
+
+		private bool OperGroupMnoj()
+		{
+			if (EQ("*") || EQ("/") || EQ("&&"))
+				return true;
+			return false;
+		}
+
+		private bool YnarOper()
+		{
+			if (EQ("!"))
+				return true;
+			return false;
+		}
+
+		#region
+		private void GetLexem()
         {
             if (_index < _listLexAnaliz.Length)
             {
@@ -339,29 +380,6 @@ namespace ТЯП_Лекс_Анализ
         {
             return lex == _lexem ? true : false;
         }
-        private bool OperGroupOtn()
-        {
-            if (EQ("!=") || EQ("==") || EQ("<") || EQ("<=") || EQ(">") || EQ(">="))
-                return true;
-            return false;
-        }
-        private bool OperGroupSloj()
-        {
-            if (EQ("+") || EQ("-") || EQ("||"))
-                return true;
-            return false;
-        }
-        private bool OperGroupMnoj()
-        {
-            if (EQ("*") || EQ("/") || EQ("&&"))
-                return true;
-            return false;
-        }
-        private bool YnarOper()
-        {
-            if (EQ("!"))
-                return true;
-            return false;
-        }
+		#endregion
     }
 }

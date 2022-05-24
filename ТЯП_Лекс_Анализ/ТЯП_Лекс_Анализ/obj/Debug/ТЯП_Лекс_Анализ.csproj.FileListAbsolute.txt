@@ -22,7 +22,6 @@ D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\bin\De
 D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\bin\Debug\ТЯП_Лекс_Анализ.exe
 D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\bin\Debug\ТЯП_Лекс_Анализ.pdb
 D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.csproj.AssemblyReference.cache
-D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.csproj.SuggestedBindingRedirects.cache
 D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.Form1.resources
 D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.Properties.Resources.resources
 D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.csproj.GenerateResource.cache
