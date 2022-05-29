@@ -28,3 +28,4 @@ D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\De
 D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.csproj.CoreCompileInputs.cache
 D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.exe
 D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.pdb
+D:\repos\TYP_KR\ТЯП_Лекс_Анализ\ТЯП_Лекс_Анализ\obj\Debug\ТЯП_Лекс_Анализ.csproj.SuggestedBindingRedirects.cache

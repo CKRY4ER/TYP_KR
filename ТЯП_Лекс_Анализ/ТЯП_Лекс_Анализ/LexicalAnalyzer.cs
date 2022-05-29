@@ -653,7 +653,9 @@ namespace ТЯП_Лекс_Анализ
                         }
                         else if (Letter())
                         {
-                            GetChar();
+
+                       //     GetChar();
+                            
                             Out(Tables.TL, Look(Tables.TL));
                             CS = States.H;
                         }

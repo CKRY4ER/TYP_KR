@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,18 +13,32 @@ namespace ТЯП_Лекс_Анализ
         public event Err ErrorMessage;
         private string _lexem;
         private Dictionary<int, string> _tableRW;
-        private Dictionary<int, string> _tableInd;
+		private DataGridView _tableIndFor4;
+		private Dictionary<int, string> _tableInd;
         private Dictionary<int, string> _tableLimiter;
-        private Dictionary<int, int> _tableNumber;
+        private Dictionary<int, double> _tableNumber;
+		private int[] _lexem2 = new int[2];
+		private Stack<int> ints = new Stack<int>();
+		private Stack<string> typesAndOpers = new Stack<string>();
         private string[] _listLexAnaliz;
         private int _index = 0;
-        public SyntaxAnalizer(string[] list, Dictionary<int, string> tableRW, Dictionary<int, string> tableInd, Dictionary<int, string> tableLimiter, Dictionary<int, int> tableNumber)
+		private DataGridView _tableOpers;
+
+		public SyntaxAnalizer(string[] list,
+			Dictionary<int, string> tableRW,
+			Dictionary<int, string> tableInd,
+			Dictionary<int, string> tableLimiter,
+			Dictionary<int, double> tableNumber,
+			DataGridView dataGridView,
+			DataGridView dataGridView1)
         {
-            _tableInd = tableInd;
+			_tableIndFor4 = dataGridView;
+			_tableInd = tableInd;
             _tableLimiter = tableLimiter;
             _tableRW = tableRW;
             _listLexAnaliz = list;
             _tableNumber = tableNumber;
+			_tableOpers = dataGridView1;
         }
         public void Pr()
         {
@@ -60,6 +75,7 @@ namespace ТЯП_Лекс_Анализ
 
 		private void Opis() 
 		{
+			ints.Clear();
 			if (EQ("dim"))
 			{
 				Sid();
@@ -84,6 +100,7 @@ namespace ТЯП_Лекс_Анализ
 		{
 			if (!IsID())
 				throw new Exception("Ошибка в списке идентификаторов");
+			Insts(_lexem2[1]);
 			GetLexem();
 		}
 
@@ -93,6 +110,7 @@ namespace ТЯП_Лекс_Анализ
 			{
 				throw new Exception("Не верный тип данных. Доступные типы данных: integer, real, boolean");
 			}
+			Dec(_lexem);
 		}
 
 		private void Oper()
@@ -154,27 +172,49 @@ namespace ТЯП_Лекс_Анализ
 		{
 			if (!IsID())
 				throw new Exception("Ошибка в построении оператора присваивания");
+			CheckId();
+			string type = GetTypePerem();
 			GetLexem();
 			if (EQ(":="))
 			{
+				typesAndOpers.Clear();
 				Viraj();
 			}
 			else
 				throw new Exception("Ошибка оператора присваивания. Ожидалось: :=");
+			CheckOp();
+			string resultType = typesAndOpers.Pop();
+			if (type=="real" && resultType == "integer")
+            {
+				return;
+            }
+			else if (type != resultType)
+            {
+				throw new Exception($"Новозможно записать тип {resultType} в тип {type}");
+            }
 		}
 
 		private void Yslov()
 		{
+			typesAndOpers.Clear();
 			GetLexem();
 			if (!EQ("("))
 				throw new Exception("Ошибка в составлении выражения внутри оператора if: выражение должно заключаться в скобки");
+			typesAndOpers.Clear();
 			Viraj();
+			CheckOp();
+			string resultType = typesAndOpers.Pop();
+			if (resultType != "boolean")
+            {
+				throw new Exception("Выражение внутри условия должно иметь тип boolean");
+            }
 			if (!EQ(")"))
 				throw new Exception("Ошибка в составлении выражения внутри оператора if: выражение должно заключаться в скобки");
 			GetLexem();
 			Oper();
 			if (EQ("else")) // Опастное место
 			{
+				typesAndOpers.Clear();
 				GetLexem();
 				Oper();
 			}
@@ -187,14 +227,14 @@ namespace ТЯП_Лекс_Анализ
 			
 			if (!EQ("to"))
 				throw new Exception("Ошибка в построении оператороа фиксированного цикла.");
-
+			typesAndOpers.Clear();
 			Viraj();
-
 			if (EQ("step"))
 			{
 				Viraj();
 			}
 			Oper();
+			GetLexem();
 			if (!EQ("next"))
 				throw new Exception("Ошибка в построении оператороа фиксированного цикла.");
 			GetLexem();
@@ -205,7 +245,14 @@ namespace ТЯП_Лекс_Анализ
 			GetLexem();
 			if (!EQ("("))
 				throw new Exception("Ошибка в составлении выражения внутри оператора while: выражение должно заключаться в скобки");
+			typesAndOpers.Clear();
 			Viraj();
+			CheckOp();
+			string resultType = typesAndOpers.Pop();
+			if (resultType != "boolean")
+			{
+				throw new Exception("Выражение внутри условного цикла должно иметь тип boolean");
+			}
 			if (!EQ(")"))
 				throw new Exception("Ошибка в составлении выражения внутри оператора while: выражение должно заключаться в скобки");
 			GetLexem();
@@ -223,7 +270,9 @@ namespace ТЯП_Лекс_Анализ
 		}
 		private void Sviraj()
 		{
+			typesAndOpers.Clear();
 			Viraj();
+			CheckOp();
 			while (EQ(","))
 			{
 				Sviraj();
@@ -267,14 +316,37 @@ namespace ТЯП_Лекс_Анализ
 
 		private void Mnoj()
 		{
-			if (IsID() || IsDigit() || EQ("true") || EQ("false"))
-			{
+			if (IsID())
+            {
+				CheckId();
+				AddTypeInStack();
 				GetLexem();
 			}
+			else if(IsDigit())
+			{ 
+                try
+                {
+					int x = int.Parse(_lexem);
+					typesAndOpers.Push("integer");
+
+                }
+                catch (Exception e)
+                {
+					typesAndOpers.Push("real");
+                }
+				GetLexem();
+			}
+			else if (EQ("true") || EQ("false"))
+			{ 
+				GetLexem();
+				typesAndOpers.Push("boolean");
+            }
 			else if (YnarOper())
 			{
 				GetLexem();
 				Mnoj();
+				//Доработать данное место
+				CheckNot();
 			}
 			else if (EQ("("))
 			{
@@ -290,21 +362,30 @@ namespace ТЯП_Лекс_Анализ
 		private bool OperGroupOtn()
 		{
 			if (EQ("!=") || EQ("==") || EQ("<") || EQ("<=") || EQ(">") || EQ(">="))
+			{
+				typesAndOpers.Push(_lexem);
 				return true;
+			}
 			return false;
 		}
 
 		private bool OperGroupSloj()
 		{
 			if (EQ("+") || EQ("-") || EQ("||"))
+			{
+				typesAndOpers.Push(_lexem);
 				return true;
+			}
 			return false;
 		}
 
 		private bool OperGroupMnoj()
 		{
 			if (EQ("*") || EQ("/") || EQ("&&"))
+			{
+				typesAndOpers.Push(_lexem);
 				return true;
+			}
 			return false;
 		}
 
@@ -315,7 +396,111 @@ namespace ТЯП_Лекс_Анализ
 			return false;
 		}
 
+
+
 		#region
+
+		private void AddTypeInStack()
+        {
+			typesAndOpers.Push(_tableIndFor4.Rows[_lexem2[1] - 1].Cells[3].Value.ToString());
+        }
+
+		private void CheckNot()
+        {
+			string type =  typesAndOpers.Pop();
+			if (type != "boolean")
+            {
+				throw new Exception("Операцию отрицания можно применять только к булевскому типу.");
+            }
+            typesAndOpers.Push(type);
+        }
+
+		private string FindMatchByOper(string oper, string type1, string type2)
+		{
+			string result = null;
+
+			for (int i = 0; i < _tableOpers.Rows.Count; i++) 
+			{
+				if (_tableOpers.Rows[i].Cells[0].Value.ToString() == oper &&
+					_tableOpers.Rows[i].Cells[1].Value.ToString() == type1 &&
+					_tableOpers.Rows[i].Cells[2].Value.ToString() == type2)
+                {
+					result = _tableOpers.Rows[i].Cells[3].Value.ToString();
+                }
+			}
+			return result;
+        }
+
+		private void CheckOp()
+        {
+			do
+			{
+				if (typesAndOpers.Count == 1 || typesAndOpers.Count == 2)
+                {
+					return;
+                }
+				string type2 = typesAndOpers.Pop();
+				string oper = typesAndOpers.Pop();
+				string type1 = typesAndOpers.Pop();
+
+				string resultType = FindMatchByOper(oper, type1, type2);
+				if (resultType != null)
+				{
+					typesAndOpers.Push(resultType);
+				}
+				else
+				{
+					throw new Exception($"Ошибка! Операцию {oper} нельзя применять к {type1} {type2}");
+				}
+			}
+			while (typesAndOpers.Count != 1);
+		}
+
+		private void CheckId()
+        {
+			if (_tableIndFor4.Rows[_lexem2[1] - 1].Cells[2].Value.ToString() != "0")
+			{
+				typesAndOpers.Push(_tableIndFor4.Rows[_lexem2[1]-1].Cells[3].Value.ToString());
+			}
+			else
+				throw new Exception($"Ошибка! Идентификатор {_tableIndFor4.Rows[_lexem2[1]-1].Cells[1].Value} не инициализирован");
+		}
+
+		private void Decid(int i, string type)
+        {
+			if (_tableIndFor4.Rows[i-1].Cells[2].Value.ToString() == "1")
+				throw new Exception($"Ошибка! Идентификатор {_tableIndFor4.Rows[i-1].Cells[1].Value} уже инициализирован.");
+            else
+            {
+				_tableIndFor4.Rows[i-1].Cells[2].Value = "1";
+				_tableIndFor4.Rows[i-1].Cells[3].Value = type;
+			}
+
+		}
+
+		private void Dec(string type)
+        {
+			while (ints.Count != 0)
+            {
+				Decid(ints.Pop(), type);
+            }
+        }
+
+		private string GetTypePerem()
+		{
+			return _tableIndFor4.Rows[_lexem2[1] - 1].Cells[3].Value.ToString();
+        }
+
+		private int Outst()
+        {
+			return ints.Pop();
+        }
+
+		private void Insts(int l)
+        {
+			ints.Push(l);
+        }
+
 		private void GetLexem()
         {
             if (_index < _listLexAnaliz.Length)
@@ -358,6 +543,8 @@ namespace ТЯП_Лекс_Анализ
                         break;
                     case (4):
                         _lexem = _tableInd[indexInTable];
+						_lexem2[0] = 4;
+						_lexem2[1] = indexInTable;
                         break;
                 }
                 _index++;

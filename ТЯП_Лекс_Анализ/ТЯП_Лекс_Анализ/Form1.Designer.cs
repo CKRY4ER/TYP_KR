@@ -21,7 +21,8 @@ namespace ТЯП_Лекс_Анализ
             base.Dispose(disposing);
         }
         private void InitializeTable()
-        {
+        { 
+
             TableReservWord.Rows.Add(1, "dim");
             TableReservWord.Rows.Add(2, "integer");
             TableReservWord.Rows.Add(3, "real");
@@ -65,6 +66,58 @@ namespace ТЯП_Лекс_Анализ
             LimiterTable.Rows.Add(23, "/*");
             LimiterTable.Rows.Add(24, "*/");
             LimiterTable.Rows.Add(25, "==");
+
+            TableOpers.Rows.Add("+", "integer", "integer", "integer");
+            TableOpers.Rows.Add("+", "integer", "real", "real");
+            TableOpers.Rows.Add("+", "real", "integer", "real");
+            TableOpers.Rows.Add("+", "real", "real", "real");
+
+            TableOpers.Rows.Add("-", "integer", "integer", "integer");
+            TableOpers.Rows.Add("-", "integer", "real", "real");
+            TableOpers.Rows.Add("-", "real", "integer", "real");
+
+            TableOpers.Rows.Add("*", "integer", "integer", "integer");
+            TableOpers.Rows.Add("*", "integer", "real", "real");
+            TableOpers.Rows.Add("*", "real", "integer", "real");
+
+            TableOpers.Rows.Add("/", "integer", "integer", "integer");
+            TableOpers.Rows.Add("/", "integer", "real", "real");
+            TableOpers.Rows.Add("/", "real", "integer", "real");
+
+            TableOpers.Rows.Add(">=", "integer", "integer", "boolean");
+            TableOpers.Rows.Add(">=", "integer", "real", "boolean");
+            TableOpers.Rows.Add(">=", "real", "real", "boolean");
+            TableOpers.Rows.Add(">=", "real", "integer", "boolean");
+
+            TableOpers.Rows.Add("<=", "integer", "real", "boolean");
+            TableOpers.Rows.Add("<=", "integer", "integer", "boolean");
+            TableOpers.Rows.Add("<=", "real", "real", "boolean");
+            TableOpers.Rows.Add("<=", "real", "integer", "boolean");
+
+            TableOpers.Rows.Add(">", "real", "real", "boolean");
+            TableOpers.Rows.Add(">", "real", "integer", "boolean");
+            TableOpers.Rows.Add(">", "integer", "integer", "boolean");
+            TableOpers.Rows.Add(">", "integer", "real", "boolean");
+
+            TableOpers.Rows.Add("<", "integer", "integer", "boolean");
+            TableOpers.Rows.Add("<", "integer", "real", "boolean");
+            TableOpers.Rows.Add("<", "real", "real", "boolean");
+            TableOpers.Rows.Add("<", "real", "integer", "boolean");
+
+            TableOpers.Rows.Add("!=", "boolean", "boolean", "boolean");
+            TableOpers.Rows.Add("!=", "integer", "integer", "boolean");
+            TableOpers.Rows.Add("!=", "integer", "real", "boolean");
+            TableOpers.Rows.Add("!=", "real", "real", "boolean");
+            TableOpers.Rows.Add("!=", "real", "integer", "boolean");
+
+            TableOpers.Rows.Add("==", "boolean", "boolean", "boolean");
+            TableOpers.Rows.Add("==", "integer", "integer", "boolean");
+            TableOpers.Rows.Add("==", "integer", "real", "boolean");
+            TableOpers.Rows.Add("==", "real", "integer", "boolean");
+            TableOpers.Rows.Add("==", "real", "real", "boolean");
+
+            TableOpers.Rows.Add("&&", "boolean", "boolean", "boolean");
+            TableOpers.Rows.Add("||", "boolean", "boolean", "boolean");
         }
 
         #region Код, автоматически созданный конструктором форм Windows
@@ -75,6 +128,9 @@ namespace ТЯП_Лекс_Анализ
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ResultTextBox = new System.Windows.Forms.TextBox();
             this.CreateAnalisButton = new System.Windows.Forms.Button();
@@ -92,13 +148,21 @@ namespace ТЯП_Лекс_Анализ
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.TableIdentifications = new System.Windows.Forms.DataGridView();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.ProgramtextTextBox = new System.Windows.Forms.TextBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.AnalisResultTextBox = new System.Windows.Forms.TextBox();
             this.SyntaxAnalisButton = new System.Windows.Forms.Button();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Described = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.TableOpers = new System.Windows.Forms.DataGridView();
+            this.Operation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TypeResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TableReservWord)).BeginInit();
@@ -110,6 +174,8 @@ namespace ТЯП_Лекс_Анализ
             ((System.ComponentModel.ISupportInitialize)(this.TableIdentifications)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TableOpers)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -117,7 +183,7 @@ namespace ТЯП_Лекс_Анализ
             this.groupBox1.Controls.Add(this.ResultTextBox);
             this.groupBox1.Location = new System.Drawing.Point(12, 704);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1368, 84);
+            this.groupBox1.Size = new System.Drawing.Size(1768, 84);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Подробности анализа";
@@ -133,7 +199,7 @@ namespace ТЯП_Лекс_Анализ
             this.ResultTextBox.Multiline = true;
             this.ResultTextBox.Name = "ResultTextBox";
             this.ResultTextBox.ReadOnly = true;
-            this.ResultTextBox.Size = new System.Drawing.Size(1356, 57);
+            this.ResultTextBox.Size = new System.Drawing.Size(1756, 57);
             this.ResultTextBox.TabIndex = 1;
             // 
             // CreateAnalisButton
@@ -302,7 +368,9 @@ namespace ТЯП_Лекс_Анализ
             this.TableIdentifications.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.TableIdentifications.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column5,
-            this.Column6});
+            this.Column6,
+            this.Described,
+            this.Type});
             this.TableIdentifications.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TableIdentifications.Location = new System.Drawing.Point(3, 18);
             this.TableIdentifications.Name = "TableIdentifications";
@@ -310,24 +378,7 @@ namespace ТЯП_Лекс_Анализ
             this.TableIdentifications.RowHeadersWidth = 51;
             this.TableIdentifications.Size = new System.Drawing.Size(259, 298);
             this.TableIdentifications.TabIndex = 0;
-            // 
-            // Column5
-            // 
-            this.Column5.Frozen = true;
-            this.Column5.HeaderText = "ID";
-            this.Column5.MinimumWidth = 6;
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            this.Column5.Width = 55;
-            // 
-            // Column6
-            // 
-            this.Column6.Frozen = true;
-            this.Column6.HeaderText = "Идентификатор";
-            this.Column6.MinimumWidth = 6;
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            this.Column6.Width = 150;
+            this.TableIdentifications.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableIdentifications_CellContentClick);
             // 
             // groupBox6
             // 
@@ -379,13 +430,131 @@ namespace ТЯП_Лекс_Анализ
             this.SyntaxAnalisButton.UseVisualStyleBackColor = true;
             this.SyntaxAnalisButton.Click += new System.EventHandler(this.SyntaxAnalisButton_Click);
             // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "ID";
+            this.Column5.MinimumWidth = 6;
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            this.Column5.Width = 55;
+            // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "Идентификатор";
+            this.Column6.MinimumWidth = 6;
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            this.Column6.Width = 150;
+            // 
+            // Described
+            // 
+            this.Described.HeaderText = "Описан";
+            this.Described.MinimumWidth = 6;
+            this.Described.Name = "Described";
+            this.Described.ReadOnly = true;
+            this.Described.Width = 125;
+            // 
+            // Type
+            // 
+            this.Type.HeaderText = "Тип";
+            this.Type.MinimumWidth = 6;
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            this.Type.Width = 125;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.TableOpers);
+            this.groupBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupBox8.Location = new System.Drawing.Point(1386, 54);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(394, 644);
+            this.groupBox8.TabIndex = 8;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Таблица двуместных операций";
+            // 
+            // TableOpers
+            // 
+            this.TableOpers.AllowUserToAddRows = false;
+            this.TableOpers.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableOpers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.TableOpers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TableOpers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Operation,
+            this.Type1,
+            this.Type2,
+            this.TypeResult});
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.TableOpers.DefaultCellStyle = dataGridViewCellStyle5;
+            this.TableOpers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TableOpers.Location = new System.Drawing.Point(3, 18);
+            this.TableOpers.Name = "TableOpers";
+            this.TableOpers.ReadOnly = true;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableOpers.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            this.TableOpers.RowHeadersWidth = 51;
+            this.TableOpers.RowTemplate.Height = 24;
+            this.TableOpers.Size = new System.Drawing.Size(388, 623);
+            this.TableOpers.TabIndex = 0;
+            // 
+            // Operation
+            // 
+            this.Operation.HeaderText = "Операция";
+            this.Operation.MinimumWidth = 6;
+            this.Operation.Name = "Operation";
+            this.Operation.ReadOnly = true;
+            this.Operation.Width = 75;
+            // 
+            // Type1
+            // 
+            this.Type1.HeaderText = "Тип 1";
+            this.Type1.MinimumWidth = 6;
+            this.Type1.Name = "Type1";
+            this.Type1.ReadOnly = true;
+            this.Type1.Width = 80;
+            // 
+            // Type2
+            // 
+            this.Type2.HeaderText = "Тип 2";
+            this.Type2.MinimumWidth = 6;
+            this.Type2.Name = "Type2";
+            this.Type2.ReadOnly = true;
+            this.Type2.Width = 80;
+            // 
+            // TypeResult
+            // 
+            this.TypeResult.HeaderText = "Тип результата";
+            this.TypeResult.MinimumWidth = 6;
+            this.TypeResult.Name = "TypeResult";
+            this.TypeResult.ReadOnly = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(1392, 789);
+            this.ClientSize = new System.Drawing.Size(1792, 789);
+            this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.SyntaxAnalisButton);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
@@ -412,6 +581,8 @@ namespace ТЯП_Лекс_Анализ
             this.groupBox6.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TableOpers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -440,9 +611,17 @@ namespace ТЯП_Лекс_Анализ
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridView TableIdentifications;
+        private System.Windows.Forms.Button SyntaxAnalisButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.Button SyntaxAnalisButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Described;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.DataGridView TableOpers;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Operation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Type1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Type2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TypeResult;
     }
 }
 
