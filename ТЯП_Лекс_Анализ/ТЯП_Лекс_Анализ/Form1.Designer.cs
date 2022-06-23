@@ -75,14 +75,18 @@ namespace ТЯП_Лекс_Анализ
             TableOpers.Rows.Add("-", "integer", "integer", "integer");
             TableOpers.Rows.Add("-", "integer", "real", "real");
             TableOpers.Rows.Add("-", "real", "integer", "real");
+            TableOpers.Rows.Add("-", "real", "real", "real");
 
             TableOpers.Rows.Add("*", "integer", "integer", "integer");
             TableOpers.Rows.Add("*", "integer", "real", "real");
             TableOpers.Rows.Add("*", "real", "integer", "real");
+            TableOpers.Rows.Add("*", "real", "real", "real");
 
             TableOpers.Rows.Add("/", "integer", "integer", "integer");
             TableOpers.Rows.Add("/", "integer", "real", "real");
             TableOpers.Rows.Add("/", "real", "integer", "real");
+            TableOpers.Rows.Add("/", "real", "real", "real");
+
 
             TableOpers.Rows.Add(">=", "integer", "integer", "boolean");
             TableOpers.Rows.Add(">=", "integer", "real", "boolean");

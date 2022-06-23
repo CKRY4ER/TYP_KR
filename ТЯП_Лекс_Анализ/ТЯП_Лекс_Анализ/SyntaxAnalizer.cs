@@ -319,7 +319,7 @@ namespace ТЯП_Лекс_Анализ
 			if (IsID())
             {
 				CheckId();
-				AddTypeInStack();
+				//AddTypeInStack();
 				GetLexem();
 			}
 			else if(IsDigit())
@@ -353,6 +353,7 @@ namespace ТЯП_Лекс_Анализ
 				Viraj();
 				if (!EQ(")"))
 					throw new Exception("Ошибка в построении выражения: пропущена закрывающая скобка");
+				CheckOp();
 				GetLexem();
 			}
 			else
